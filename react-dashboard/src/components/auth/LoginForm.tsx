@@ -1,0 +1,144 @@
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { motion } from 'framer-motion';
+import { Eye, EyeOff, LogIn, AlertCircle } from 'lucide-react';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { loginUser, clearError } from '../../store/slices/authSlice';
+import type { UserDto } from '../../types';
+
+interface LoginFormProps {
+  onSuccess?: () => void;
+}
+
+export const LoginForm = ({ onSuccess }: LoginFormProps) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useAppDispatch();
+  const { isLoading, error } = useAppSelector((state) => state.auth);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserDto>();
+
+  const onSubmit = async (data: UserDto) => {
+    try {
+      await dispatch(loginUser(data)).unwrap();
+      onSuccess?.();
+    } catch {
+      // Error handled by the slice
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl w-full max-w-md border border-slate-200 dark:border-slate-700"
+      >
+        <div className="text-center mb-8">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+            className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl mx-auto mb-4 flex items-center justify-center"
+          >
+            <LogIn className="w-8 h-8 text-white" />
+          </motion.div>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+            Welcome back
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400">
+            Sign in to your dashboard
+          </p>
+        </div>
+
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-center gap-2"
+          >
+            <AlertCircle className="w-4 h-4 text-red-500" />
+            <span className="text-sm text-red-700 dark:text-red-400">{error}</span>
+            <button
+              onClick={() => dispatch(clearError())}
+              className="ml-auto text-red-500 hover:text-red-700"
+            >
+              ×
+            </button>
+          </motion.div>
+        )}
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Username
+            </label>
+            <input
+              {...register('username', { required: 'Username is required' })}
+              type="text"
+              className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              placeholder="Enter your username"
+            />
+            {errors.username && (
+              <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Password
+            </label>
+            <div className="relative">
+              <input
+                {...register('password', { required: 'Password is required' })}
+                type={showPassword ? 'text' : 'password'}
+                className="w-full px-4 py-3 pr-12 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="Enter your password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+            )}
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Signing in...
+              </div>
+            ) : (
+              'Sign in'
+            )}
+          </motion.button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-slate-600 dark:text-slate-400 text-sm">
+            Don't have an account?{' '}
+            <button className="text-blue-500 hover:text-blue-600 font-medium">
+              Sign up
+            </button>
+          </p>
+        </div>
+      </motion.div>
+    </div>
+  );
+};

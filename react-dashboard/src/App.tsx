@@ -1,35 +1,134 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useAppSelector } from './hooks/redux';
+import { DashboardLayout } from './components/layout/DashboardLayout';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { LoginPage } from './pages/auth/LoginPage';
+import { RegisterPage } from './pages/auth/RegisterPage';
+import { DashboardPage } from './pages/dashboard/DashboardPage';
+import { AnalyticsPage } from './pages/dashboard/AnalyticsPage';
+import { ComingSoonPage } from './pages/dashboard/ComingSoonPage';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        {/* Auth Routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        
+        {/* Protected Dashboard Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <DashboardPage />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <AnalyticsPage />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <ComingSoonPage title="Reports" />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/users"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <ComingSoonPage title="Users" />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/calendar"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <ComingSoonPage title="Calendar" />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/messages"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <ComingSoonPage title="Messages" />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/documents"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <ComingSoonPage title="Documents" />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <ComingSoonPage title="Settings" />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        
+        {/* Root redirect */}
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        
+        {/* Catch all */}
+        <Route
+          path="*"
+          element={
+            <Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
