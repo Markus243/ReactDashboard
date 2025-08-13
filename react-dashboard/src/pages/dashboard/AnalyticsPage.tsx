@@ -34,7 +34,7 @@ export const AnalyticsPage = () => {
           change={12.5}
           changeLabel="vs last week"
           icon={Eye}
-          color="blue"
+          color="primary"
         />
         <MetricCard
           title="Sessions"
@@ -42,7 +42,7 @@ export const AnalyticsPage = () => {
           change={8.2}
           changeLabel="vs last week"
           icon={Users}
-          color="green"
+          color="accent"
         />
         <MetricCard
           title="Bounce Rate"
@@ -50,7 +50,7 @@ export const AnalyticsPage = () => {
           change={-2.1}
           changeLabel="vs last week"
           icon={TrendingUp}
-          color="purple"
+          color="primary"
         />
         <MetricCard
           title="Conversion"
@@ -58,20 +58,8 @@ export const AnalyticsPage = () => {
           change={0.8}
           changeLabel="vs last week"
           icon={BarChart3}
-          color="orange"
+          color="warning"
         />
-      </div>
-
-      <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
-          Analytics Dashboard
-        </h3>
-        <div className="flex items-center justify-center h-64 text-slate-500 dark:text-slate-400">
-          <div className="text-center">
-            <BarChart3 className="w-16 h-16 mx-auto mb-4 opacity-50" />
-            <p>Analytics charts will be displayed here</p>
-          </div>
-        </div>
       </div>
     </motion.div>
   );

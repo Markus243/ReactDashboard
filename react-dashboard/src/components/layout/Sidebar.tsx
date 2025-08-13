@@ -11,6 +11,7 @@ import {
   X
 } from 'lucide-react';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
+import { useResponsive } from '../../hooks/useResponsive';
 import { setSidebarOpen } from '../../store/slices/uiSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { clsx } from 'clsx';
@@ -28,6 +29,7 @@ const menuItems = [
 
 export const Sidebar = () => {
   const { sidebarOpen } = useAppSelector((state) => state.ui);
+  const { isMobile } = useResponsive();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,7 +37,7 @@ export const Sidebar = () => {
   const handleNavigate = (path: string) => {
     navigate(path);
     // Close sidebar on mobile after navigation
-    if (window.innerWidth < 768) {
+    if (isMobile) {
       dispatch(setSidebarOpen(false));
     }
   };
@@ -44,13 +46,13 @@ export const Sidebar = () => {
     <>
       {/* Mobile Overlay */}
       <AnimatePresence>
-        {sidebarOpen && (
+        {sidebarOpen && isMobile && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => dispatch(setSidebarOpen(false))}
-            className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
           />
         )}
       </AnimatePresence>
@@ -59,36 +61,39 @@ export const Sidebar = () => {
       <motion.aside
         initial={false}
         animate={{
-          x: sidebarOpen ? 0 : -280,
+          width: sidebarOpen ? 288 : isMobile ? 288 : 0,
+          x: sidebarOpen ? 0 : isMobile ? -288 : 0,
         }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className={clsx(
-          "fixed top-0 left-0 z-50 h-full w-72 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 shadow-lg",
-          "md:relative md:shadow-none md:z-auto"
+          "h-full bg-white dark:bg-dark-800 border-r border-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0",
+          isMobile && "fixed top-0 left-0 z-50 shadow-lg"
         )}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full w-72">
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+          <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 h-[85px]">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-accent-500 rounded-lg flex items-center justify-center">
                 <LayoutDashboard className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                <h2 className="text-lg font-bold text-gray-900 dark:text-white">
                   Dashboard
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   v1.0.0
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => dispatch(setSidebarOpen(false))}
-              className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors md:hidden"
-            >
-              <X className="w-5 h-5 text-slate-500 dark:text-slate-400" />
-            </button>
+            {isMobile && (
+              <button
+                onClick={() => dispatch(setSidebarOpen(false))}
+                className="p-1 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+              </button>
+            )}
           </div>
 
           {/* Navigation */}
@@ -108,8 +113,8 @@ export const Sidebar = () => {
                     className={clsx(
                       "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200",
                       isActive
-                        ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg"
-                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+                        ? "bg-gradient-to-r from-primary-500 to-accent-500 text-white shadow-lg"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700"
                     )}
                   >
                     <Icon className="w-5 h-5" />
@@ -127,22 +132,22 @@ export const Sidebar = () => {
           </nav>
 
           {/* Footer */}
-          <div className="p-4 border-t border-slate-200 dark:border-slate-700">
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl p-4">
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="bg-gradient-to-r from-primary-50 to-accent-50 dark:from-dark-700 dark:to-dark-700 rounded-xl p-4">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-r from-accent-400 to-primary-500 rounded-lg flex items-center justify-center">
                   <TrendingUp className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
                     Upgrade Plan
                   </h3>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
                     Get more features
                   </p>
                 </div>
               </div>
-              <button className="w-full py-2 px-3 bg-white dark:bg-slate-700 text-sm font-medium text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
+              <button className="w-full py-2 px-3 bg-white dark:bg-dark-600 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-500 transition-colors">
                 Learn More
               </button>
             </div>

@@ -27,22 +27,22 @@ export const ChartWidget = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="relative bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm hover:shadow-lg transition-all duration-300"
+      className="relative bg-white dark:bg-dark-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-lg transition-all duration-300"
     >
       {loading && (
-        <div className="absolute inset-0 bg-white/50 dark:bg-slate-800/50 flex items-center justify-center rounded-2xl z-10">
-          <div className="w-8 h-8 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin" />
+        <div className="absolute inset-0 bg-white/50 dark:bg-gray-800/50 flex items-center justify-center rounded-2xl z-10">
+          <div className="w-8 h-8 border-2 border-gray-300 border-t-slate-600 rounded-full animate-spin" />
         </div>
       )}
 
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
             {title}
           </h3>
           {subtitle && (
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               {subtitle}
             </p>
           )}
@@ -62,7 +62,7 @@ export const ChartWidget = ({
               >
                 {trend.value >= 0 ? '+' : ''}{trend.value}%
               </span>
-              <span className="text-sm text-slate-500 dark:text-slate-400">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
                 {trend.label}
               </span>
             </div>
@@ -71,8 +71,8 @@ export const ChartWidget = ({
 
         <div className="flex items-center gap-2">
           {actions}
-          <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
-            <MoreHorizontal className="w-4 h-4 text-slate-400" />
+          <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+            <MoreHorizontal className="w-4 h-4 text-gray-400" />
           </button>
         </div>
       </div>

@@ -75,18 +75,32 @@ export const defaultChartOptions = {
   },
 };
 
+// Soft, modern color palette
 export const chartColors = {
-  primary: '#3B82F6',
-  secondary: '#8B5CF6',
-  success: '#10B981',
-  warning: '#F59E0B',
-  danger: '#EF4444',
-  info: '#06B6D4',
+  primary: '#64748b',     // Soft slate
+  secondary: '#14b8a6',   // Soft teal
+  accent: '#2dd4bf',      // Light teal
+  tertiary: '#94a3b8',    // Light slate
+  success: '#10b981',     // Soft emerald
+  warning: '#f59e0b',     // Amber
+  danger: '#ef4444',      // Soft red
+  info: '#06b6d4',        // Cyan
 };
 
-export const gradients = {
-  blue: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  purple: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-  green: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-  orange: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+export const chartColorPalette = [
+  '#64748b', // primary
+  '#14b8a6', // secondary
+  '#2dd4bf', // accent
+  '#94a3b8', // tertiary
+  '#10b981', // success
+  '#f59e0b', // warning
+  '#8b5cf6', // purple
+  '#06b6d4', // cyan
+];
+
+export const softGradients = {
+  primary: 'linear-gradient(135deg, #64748b 0%, #475569 100%)',
+  secondary: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)',
+  accent: 'linear-gradient(135deg, #2dd4bf 0%, #14b8a6 100%)',
+  subtle: 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)',
 };

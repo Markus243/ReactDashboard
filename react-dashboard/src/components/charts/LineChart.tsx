@@ -1,49 +1,90 @@
 import { Line } from 'react-chartjs-2';
-import type { ChartData } from '../../types';
-import { defaultChartOptions, chartColors } from './chartConfig';
+import type { ChartData as ChartJSData, ChartOptions } from 'chart.js';
+import { defaultChartOptions, chartColorPalette } from './chartConfig';
 
-interface LineChartProps {
-  data: ChartData;
-  title?: string;
-  height?: number;
-  gradient?: boolean;
+export interface LineChartData {
+  labels: string[];
+  datasets: Array<{
+    label: string;
+    data: number[];
+    color?: string;
+    gradient?: boolean;
+    fill?: boolean;
+  }>;
 }
 
-export const LineChart = ({ data, title, height = 300, gradient = true }: LineChartProps) => {
-  const chartData = {
+interface LineChartProps {
+  data: LineChartData;
+  height?: number;
+  showLegend?: boolean;
+  showGrid?: boolean;
+  smooth?: boolean;
+  customOptions?: Partial<ChartOptions<'line'>>;
+}
+
+export const LineChart = ({ 
+  data, 
+  height = 300, 
+  showLegend = true,
+  showGrid = true,
+  smooth = true,
+  customOptions = {}
+}: LineChartProps) => {
+  
+  const chartData: ChartJSData<'line'> = {
     labels: data.labels,
-    datasets: [
-      {
-        label: title || 'Data',
-        data: data.data,
-        borderColor: data.borderColor?.[0] || chartColors.primary,
-        backgroundColor: gradient 
-          ? `${data.backgroundColor?.[0] || chartColors.primary}20`
-          : data.backgroundColor?.[0] || chartColors.primary,
-        borderWidth: 3,
-        fill: gradient,
-        tension: 0.4,
-        pointBackgroundColor: data.borderColor?.[0] || chartColors.primary,
+    datasets: data.datasets.map((dataset, index) => {
+      const color = dataset.color || chartColorPalette[index % chartColorPalette.length];
+      const fillColor = dataset.gradient ? `${color}15` : 'transparent';
+      
+      return {
+        label: dataset.label,
+        data: dataset.data,
+        borderColor: color,
+        backgroundColor: dataset.fill !== false ? fillColor : 'transparent',
+        borderWidth: 2.5,
+        fill: dataset.fill !== false,
+        tension: smooth ? 0.4 : 0,
+        pointBackgroundColor: color,
         pointBorderColor: '#ffffff',
         pointBorderWidth: 2,
-        pointRadius: 5,
-        pointHoverRadius: 7,
-        pointHoverBackgroundColor: data.borderColor?.[0] || chartColors.primary,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointHoverBackgroundColor: color,
         pointHoverBorderColor: '#ffffff',
         pointHoverBorderWidth: 2,
-      },
-    ],
+      };
+    }),
   };
 
-  const options = {
+  const options: ChartOptions<'line'> = {
     ...defaultChartOptions,
-    scales: {
-      ...defaultChartOptions.scales,
-      y: {
-        ...defaultChartOptions.scales.y,
-        beginAtZero: true,
+    plugins: {
+      ...defaultChartOptions.plugins,
+      legend: {
+        ...defaultChartOptions.plugins?.legend,
+        display: showLegend,
       },
     },
+    scales: {
+      ...defaultChartOptions.scales,
+      x: {
+        ...defaultChartOptions.scales?.x,
+        grid: {
+          display: showGrid,
+          color: 'rgba(148, 163, 184, 0.1)',
+        },
+      },
+      y: {
+        ...defaultChartOptions.scales?.y,
+        beginAtZero: true,
+        grid: {
+          display: showGrid,
+          color: 'rgba(148, 163, 184, 0.1)',
+        },
+      },
+    },
+    ...customOptions,
   };
 
   return (

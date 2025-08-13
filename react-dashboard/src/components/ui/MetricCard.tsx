@@ -8,7 +8,7 @@ interface MetricCardProps {
   change?: number;
   changeLabel?: string;
   icon: LucideIcon;
-  color?: 'blue' | 'green' | 'purple' | 'orange' | 'red';
+  color?: 'primary' | 'accent' | 'warning' | 'success' | 'danger';
   loading?: boolean;
 }
 
@@ -18,7 +18,7 @@ export const MetricCard = ({
   change,
   changeLabel,
   icon: Icon,
-  color = 'blue',
+  color = 'primary',
   loading = false,
 }: MetricCardProps) => {
   const formatValue = (val: string | number) => {
@@ -35,19 +35,19 @@ export const MetricCard = ({
   };
 
   const colorClasses = {
-    blue: 'from-blue-500 to-blue-600',
-    green: 'from-green-500 to-green-600',
-    purple: 'from-purple-500 to-purple-600',
-    orange: 'from-orange-500 to-orange-600',
-    red: 'from-red-500 to-red-600',
+    primary: 'from-primary-500 to-primary-600',
+    accent: 'from-accent-500 to-accent-600',
+    warning: 'from-yellow-500 to-yellow-600',
+    success: 'from-green-500 to-green-600',
+    danger: 'from-red-500 to-red-600',
   };
 
   const bgColorClasses = {
-    blue: 'from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20',
-    green: 'from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20',
-    purple: 'from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20',
-    orange: 'from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20',
-    red: 'from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20',
+    primary: 'from-primary-50 to-primary-100 dark:from-dark-700 dark:to-dark-700',
+    accent: 'from-accent-50 to-accent-100 dark:from-dark-700 dark:to-dark-700',
+    warning: 'from-yellow-50 to-yellow-100 dark:from-dark-700 dark:to-dark-700',
+    success: 'from-green-50 to-green-100 dark:from-dark-700 dark:to-dark-700',
+    danger: 'from-red-50 to-red-100 dark:from-dark-700 dark:to-dark-700',
   };
 
   return (
@@ -57,22 +57,22 @@ export const MetricCard = ({
       whileHover={{ y: -5 }}
       transition={{ duration: 0.3 }}
       className={clsx(
-        "relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm hover:shadow-lg transition-all duration-300",
+        "relative overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-800 p-6 shadow-sm hover:shadow-lg transition-all duration-300",
         `bg-gradient-to-br ${bgColorClasses[color]}`
       )}
     >
       {loading && (
-        <div className="absolute inset-0 bg-white/50 dark:bg-slate-800/50 flex items-center justify-center">
-          <div className="w-6 h-6 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin" />
+        <div className="absolute inset-0 bg-white/50 dark:bg-gray-800/50 flex items-center justify-center">
+          <div className="w-6 h-6 border-2 border-gray-300 border-t-slate-600 rounded-full animate-spin" />
         </div>
       )}
 
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">
+          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
             {title}
           </p>
-          <p className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+          <p className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
             {formatValue(value)}
           </p>
           
@@ -81,13 +81,13 @@ export const MetricCard = ({
               <span
                 className={clsx(
                   "text-sm font-medium",
-                  change >= 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
+                  change >= 0 ? "text-accent-600 dark:text-accent-400" : "text-red-600 dark:text-red-400"
                 )}
               >
                 {change >= 0 ? '+' : ''}{change}%
               </span>
               {changeLabel && (
-                <span className="text-sm text-slate-500 dark:text-slate-400">
+                <span className="text-sm text-gray-500 dark:text-gray-400">
                   {changeLabel}
                 </span>
               )}
@@ -104,8 +104,8 @@ export const MetricCard = ({
       </div>
 
       {/* Subtle background pattern */}
-      <div className="absolute top-0 right-0 -mt-4 -mr-4 h-16 w-16 rounded-full bg-white/10 dark:bg-slate-700/10" />
-      <div className="absolute bottom-0 left-0 -mb-8 -ml-8 h-20 w-20 rounded-full bg-white/5 dark:bg-slate-700/5" />
+      <div className="absolute top-0 right-0 -mt-4 -mr-4 h-16 w-16 rounded-full bg-white/10 dark:bg-gray-700/10" />
+      <div className="absolute bottom-0 left-0 -mb-8 -ml-8 h-20 w-20 rounded-full bg-white/5 dark:bg-gray-700/5" />
     </motion.div>
   );
 };

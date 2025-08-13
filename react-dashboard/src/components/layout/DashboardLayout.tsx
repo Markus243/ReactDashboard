@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
+import { Footer } from './Footer';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import { setTheme } from '../../store/slices/uiSlice';
 
@@ -43,10 +44,10 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   }, [dispatch]);
 
   return (
-    <div className="flex h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="flex h-screen bg-gray-50 dark:bg-dark-900">
       <Sidebar />
       
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex flex-col flex-1 overflow-hidden">
         <Header />
         
         <main className="flex-1 overflow-x-hidden overflow-y-auto">
@@ -54,11 +55,13 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="p-6"
+            className="p-6 min-h-[calc(100vh-170px)]"
           >
             {children}
           </motion.div>
         </main>
+        
+        <Footer />
       </div>
     </div>
   );
