@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, LogIn, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, LogIn, AlertCircle, Moon, Sun } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { loginUser, clearError } from '../../store/slices/authSlice';
+import { toggleTheme } from '../../store/slices/uiSlice';
 import type { UserDto } from '../../types';
 
 interface LoginFormProps {
@@ -14,6 +15,21 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useAppDispatch();
   const { isLoading, error } = useAppSelector((state) => state.auth);
+  const { theme } = useAppSelector((state) => state.ui);
+
+  // Apply theme to document for auth pages
+  useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      body.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+      body.classList.remove('dark');
+    }
+  }, [theme]);
 
   const {
     register,
@@ -32,6 +48,20 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 px-4">
+      {/* Theme Toggle Button */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        onClick={() => dispatch(toggleTheme())}
+        className="fixed top-4 right-4 p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg hover:shadow-xl transition-all duration-200"
+      >
+        {theme === 'light' ? (
+          <Moon className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+        ) : (
+          <Sun className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+        )}
+      </motion.button>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

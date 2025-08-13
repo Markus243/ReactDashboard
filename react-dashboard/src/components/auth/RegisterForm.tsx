@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, UserPlus, AlertCircle } from 'lucide-react';
@@ -14,6 +14,21 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useAppDispatch();
   const { isLoading, error } = useAppSelector((state) => state.auth);
+  const { theme } = useAppSelector((state) => state.ui);
+
+  // Apply theme to document for auth pages
+  useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      body.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+      body.classList.remove('dark');
+    }
+  }, [theme]);
 
   const {
     register,

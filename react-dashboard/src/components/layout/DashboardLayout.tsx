@@ -14,8 +14,20 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // Apply theme to document
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    // Apply theme to document root and body
+    const root = document.documentElement;
+    const body = document.body;
+    
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      body.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+      body.classList.remove('dark');
+    }
+    
+    // Also set data attribute for additional styling hooks
+    root.setAttribute('data-theme', theme);
   }, [theme]);
 
   useEffect(() => {
@@ -25,6 +37,8 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       dispatch(setTheme(savedTheme));
     } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       dispatch(setTheme('dark'));
+    } else {
+      dispatch(setTheme('light'));
     }
   }, [dispatch]);
 
