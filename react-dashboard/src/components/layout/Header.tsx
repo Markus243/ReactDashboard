@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { 
   Menu, 
   Search, 
@@ -59,7 +58,7 @@ export const Header = () => {
             <input
               type="text"
               placeholder="Search..."
-              className="pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 border-0 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:bg-white dark:focus:bg-gray-600 transition-all duration-200 w-64"
+              className="pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 border-0 rounded-lg text-sm focus:ring-2 focus:ring-primary-400 focus:ring-offset-0 focus:bg-white dark:focus:bg-gray-600 transition-all duration-200 w-64"
             />
           </div>
 
@@ -86,13 +85,10 @@ export const Header = () => {
             </button>
 
             {notificationsOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 py-2 z-50"
+              <div
+                                className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
               >
-                <div className="px-4 py-2 border-b border-slate-200 dark:border-slate-700">
+                <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
                   <h3 className="font-semibold text-gray-900 dark:text-white">Notifications</h3>
                 </div>
                 <div className="max-h-64 overflow-y-auto">
@@ -100,7 +96,7 @@ export const Header = () => {
                     No new notifications
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )}
           </div>
 
@@ -110,7 +106,7 @@ export const Header = () => {
               onClick={() => setUserMenuOpen(!userMenuOpen)}
               className="flex items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors"
             >
-              <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-accent-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
                 <User className="w-4 h-4 text-white" />
               </div>
               <div className="hidden md:block text-left">
@@ -125,13 +121,10 @@ export const Header = () => {
             </button>
 
             {userMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 py-2 z-50"
+              <div
+                                className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
               >
-                <div className="px-4 py-2 border-b border-slate-200 dark:border-slate-700">
+                <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
                   <div className="text-sm font-medium text-gray-900 dark:text-white">
                     {user?.firstName} {user?.lastName}
                   </div>
@@ -151,7 +144,7 @@ export const Header = () => {
                   </button>
                 </div>
                 
-                <div className="border-t border-slate-200 dark:border-slate-700 pt-1">
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-1">
                   <button
                     onClick={handleLogout}
                     className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
@@ -160,7 +153,7 @@ export const Header = () => {
                     Sign out
                   </button>
                 </div>
-              </motion.div>
+              </div>
             )}
           </div>
         </div>

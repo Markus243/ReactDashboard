@@ -1,6 +1,6 @@
 import { Bar } from 'react-chartjs-2';
 import type { ChartData as ChartJSData, ChartOptions } from 'chart.js';
-import { defaultChartOptions, chartColorPalette } from './chartConfig';
+import { defaultChartOptions, darkChartOptions, chartColorPalette } from './chartConfig';
 
 export interface BarChartData {
   labels: string[];
@@ -19,6 +19,7 @@ interface BarChartProps {
   showLegend?: boolean;
   showGrid?: boolean;
   borderRadius?: number;
+  isDark?: boolean;
   customOptions?: Partial<ChartOptions<'bar'>>;
 }
 
@@ -29,6 +30,7 @@ export const BarChart = ({
   showLegend = true,
   showGrid = true,
   borderRadius = 6,
+  isDark = false,
   customOptions = {}
 }: BarChartProps) => {
   
@@ -42,7 +44,7 @@ export const BarChart = ({
         data: dataset.data,
         backgroundColor: dataset.data.map((_, index) => {
           const color = colors[index % colors.length];
-          return dataset.gradient ? `${color}80` : `${color}90`;
+          return `${color}E6`;
         }),
         borderColor: dataset.data.map((_, index) => 
           colors[index % colors.length]
@@ -54,31 +56,33 @@ export const BarChart = ({
     }),
   };
 
+  const baseOptions = isDark ? darkChartOptions : defaultChartOptions;
+  
   const options: ChartOptions<'bar'> = {
-    ...defaultChartOptions,
+    ...baseOptions,
     indexAxis: horizontal ? 'y' as const : 'x' as const,
     plugins: {
-      ...defaultChartOptions.plugins,
+      ...baseOptions.plugins,
       legend: {
-        ...defaultChartOptions.plugins?.legend,
+        ...baseOptions.plugins?.legend,
         display: showLegend,
       },
     },
     scales: {
-      ...defaultChartOptions.scales,
+      ...baseOptions.scales,
       x: {
-        ...defaultChartOptions.scales?.x,
+        ...baseOptions.scales?.x,
         grid: {
+          ...baseOptions.scales?.x?.grid,
           display: showGrid,
-          color: 'rgba(148, 163, 184, 0.1)',
         },
       },
       y: {
-        ...defaultChartOptions.scales?.y,
+        ...baseOptions.scales?.y,
         beginAtZero: true,
         grid: {
+          ...baseOptions.scales?.y?.grid,
           display: showGrid,
-          color: 'rgba(148, 163, 184, 0.1)',
         },
       },
     },

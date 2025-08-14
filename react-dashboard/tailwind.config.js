@@ -22,31 +22,31 @@ export default {
           900: '#000000',
           950: '#000000',
         },
-        // Soft primary theme (muted blue)
+        // Blue theme palette
         primary: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
+          50: '#f0f9ff',
+          100: '#e0f2fe', 
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
+          500: '#189AB4', // Main blue
+          600: '#05445E', // Dark blue
+          700: '#05445E',
+          800: '#042f42',
+          900: '#032330',
         },
-        // Soft accent theme (muted teal)
+        // Light blue accent theme
         accent: {
-          50: '#f0fdfa',
-          100: '#ccfbf1',
-          200: '#99f6e4',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#14b8a6',
-          600: '#0d9488',
-          700: '#0f766e',
-          800: '#115e59',
-          900: '#134e4a',
+          50: '#f0fdfd',
+          100: '#e6ffff',
+          200: '#D4F1F4', // Lightest blue
+          300: '#b8f0f4',
+          400: '#9ee8ed',
+          500: '#75E6DA', // Light blue
+          600: '#5dd9ce',
+          700: '#4fb8ae',
+          800: '#3e8b82',
+          900: '#2d645e',
         },
       },
       fontFamily: {

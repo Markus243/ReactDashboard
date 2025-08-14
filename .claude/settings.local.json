@@ -12,6 +12,9 @@
       "Bash(npx tailwindcss init:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "C:\\c\\dev\\ReactDashboard"
+    ]
   }
 }

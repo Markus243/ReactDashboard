@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, 
   BarChart3, 
@@ -45,36 +45,26 @@ export const Sidebar = () => {
   return (
     <>
       {/* Mobile Overlay */}
-      <AnimatePresence>
-        {sidebarOpen && isMobile && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => dispatch(setSidebarOpen(false))}
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          />
-        )}
-      </AnimatePresence>
+      {sidebarOpen && isMobile && (
+        <div
+          onClick={() => dispatch(setSidebarOpen(false))}
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        />
+      )}
 
       {/* Sidebar */}
-      <motion.aside
-        initial={false}
-        animate={{
-          width: sidebarOpen ? 288 : isMobile ? 288 : 0,
-          x: sidebarOpen ? 0 : isMobile ? -288 : 0,
-        }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+      <aside
         className={clsx(
-          "h-full bg-white dark:bg-dark-800 border-r border-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0",
-          isMobile && "fixed top-0 left-0 z-50 shadow-lg"
+          "h-full bg-white dark:bg-dark-800 border-r border-gray-200 dark:border-gray-700 overflow-hidden flex-shrink-0 transition-transform duration-300",
+          isMobile && "fixed top-0 left-0 z-50 shadow-lg",
+          sidebarOpen ? "w-72" : isMobile ? "-translate-x-full w-72" : "w-0"
         )}
       >
         <div className="flex flex-col h-full w-72">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 h-[85px]">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-accent-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
                 <LayoutDashboard className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -105,15 +95,13 @@ export const Sidebar = () => {
                   (item.path === '/dashboard' && location.pathname === '/');
                 
                 return (
-                  <motion.button
+                  <button
                     key={item.path}
                     onClick={() => handleNavigate(item.path)}
-                    whileHover={{ x: 4 }}
-                    whileTap={{ scale: 0.98 }}
                     className={clsx(
-                      "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200",
+                      "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors duration-200",
                       isActive
-                        ? "bg-gradient-to-r from-primary-500 to-accent-500 text-white shadow-lg"
+                        ? "bg-primary-500 text-white"
                         : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700"
                     )}
                   >
@@ -123,9 +111,12 @@ export const Sidebar = () => {
                       <motion.div
                         layoutId="sidebar-indicator"
                         className="ml-auto w-2 h-2 bg-white rounded-full"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 25 }}
                       />
                     )}
-                  </motion.button>
+                  </button>
                 );
               })}
             </div>
@@ -133,9 +124,9 @@ export const Sidebar = () => {
 
           {/* Footer */}
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-            <div className="bg-gradient-to-r from-primary-50 to-accent-50 dark:from-dark-700 dark:to-dark-700 rounded-xl p-4">
+            <div className="bg-primary-50 dark:bg-dark-700 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-accent-400 to-primary-500 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-accent-500 rounded-lg flex items-center justify-center">
                   <TrendingUp className="w-4 h-4 text-white" />
                 </div>
                 <div>
@@ -153,7 +144,7 @@ export const Sidebar = () => {
             </div>
           </div>
         </div>
-      </motion.aside>
+      </aside>
     </>
   );
 };

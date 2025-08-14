@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, UserPlus, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, UserPlus, AlertCircle, Moon, Sun } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { registerUser, clearError } from '../../store/slices/authSlice';
+import { toggleTheme } from '../../store/slices/uiSlice';
 import type { CreateUserDto } from '../../types';
 
 interface RegisterFormProps {
@@ -51,7 +53,20 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-dark-900 dark:to-dark-800 px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-accent-200 to-accent-50 dark:from-dark-900 dark:to-dark-800 px-4 py-8">
+      {/* Theme Toggle Button */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        onClick={() => dispatch(toggleTheme())}
+        className="fixed top-4 right-4 p-3 rounded-xl bg-white dark:bg-dark-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-200"
+      >
+        {theme === 'light' ? (
+          <Moon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+        ) : (
+          <Sun className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+        )}
+      </motion.button>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -63,7 +78,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="w-16 h-16 bg-gradient-to-r from-accent-500 to-primary-500 rounded-xl mx-auto mb-4 flex items-center justify-center"
+            className="w-16 h-16 bg-primary-500 rounded-xl mx-auto mb-4 flex items-center justify-center"
           >
             <UserPlus className="w-8 h-8 text-white" />
           </motion.div>
@@ -101,7 +116,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               <input
                 {...register('firstName', { required: 'First name is required' })}
                 type="text"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-400 focus:border-primary-500 transition-all duration-200"
                 placeholder="John"
               />
               {errors.firstName && (
@@ -116,7 +131,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               <input
                 {...register('lastName', { required: 'Last name is required' })}
                 type="text"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-400 focus:border-primary-500 transition-all duration-200"
                 placeholder="Doe"
               />
               {errors.lastName && (
@@ -132,7 +147,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
             <input
               {...register('username', { required: 'Username is required' })}
               type="text"
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-400 focus:border-primary-500 transition-all duration-200"
               placeholder="johndoe"
             />
             {errors.username && (
@@ -152,7 +167,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
                 },
               })}
               type="email"
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-400 focus:border-primary-500 transition-all duration-200"
               placeholder="john@example.com"
             />
             {errors.email && (
@@ -174,7 +189,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
                   },
                 })}
                 type={showPassword ? 'text' : 'password'}
-                className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-400 focus:border-primary-500 transition-all duration-200"
                 placeholder="Enter password"
               />
               <button
@@ -200,7 +215,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
                 validate: (value) => value === watchPassword || 'Passwords do not match',
               })}
               type="password"
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-400 focus:border-primary-500 transition-all duration-200"
               placeholder="Confirm password"
             />
             {errors.confirmPassword && (
@@ -214,7 +229,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
             </label>
             <select
               {...register('role', { required: 'Role is required' })}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-400 focus:border-primary-500 transition-all duration-200"
             >
               <option value="">Select a role</option>
               <option value="User">User</option>
@@ -230,7 +245,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
             whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-accent-500 to-primary-500 text-white py-3 px-4 rounded-lg font-medium hover:from-accent-600 hover:to-primary-600 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            className="w-full bg-primary-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-primary-600 focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
             {isLoading ? (
               <div className="flex items-center justify-center gap-2">
@@ -246,9 +261,9 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
         <div className="mt-6 text-center">
           <p className="text-gray-600 dark:text-gray-400 text-sm">
             Already have an account?{' '}
-            <button className="text-blue-500 hover:text-blue-600 font-medium">
+            <Link to="/login" className="text-primary-500 hover:text-primary-600 font-medium">
               Sign in
-            </button>
+            </Link>
           </p>
         </div>
       </motion.div>

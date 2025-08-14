@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, LogIn, AlertCircle, Moon, Sun } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -47,7 +48,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-dark-900 dark:to-dark-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-accent-200 to-accent-50 dark:from-dark-900 dark:to-dark-800 px-4">
       {/* Theme Toggle Button */}
       <motion.button
         initial={{ opacity: 0 }}
@@ -73,7 +74,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="w-16 h-16 bg-gradient-to-r from-primary-500 to-accent-500 rounded-xl mx-auto mb-4 flex items-center justify-center"
+            className="w-16 h-16 bg-primary-500 rounded-xl mx-auto mb-4 flex items-center justify-center"
           >
             <LogIn className="w-8 h-8 text-white" />
           </motion.div>
@@ -110,7 +111,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             <input
               {...register('username', { required: 'Username is required' })}
               type="text"
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-400 focus:border-primary-500 transition-all duration-200"
               placeholder="Enter your username"
             />
             {errors.username && (
@@ -126,7 +127,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               <input
                 {...register('password', { required: 'Password is required' })}
                 type={showPassword ? 'text' : 'password'}
-                className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-400 focus:border-primary-500 transition-all duration-200"
                 placeholder="Enter your password"
               />
               <button
@@ -147,7 +148,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-primary-500 to-accent-500 text-white py-3 px-4 rounded-lg font-medium hover:from-primary-600 hover:to-accent-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            className="w-full bg-primary-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-primary-600 focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
             {isLoading ? (
               <div className="flex items-center justify-center gap-2">
@@ -163,9 +164,9 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <div className="mt-6 text-center">
           <p className="text-gray-600 dark:text-gray-400 text-sm">
             Don't have an account?{' '}
-            <button className="text-blue-500 hover:text-blue-600 font-medium">
+            <Link to="/register" className="text-primary-500 hover:text-primary-600 font-medium">
               Sign up
-            </button>
+            </Link>
           </p>
         </div>
       </motion.div>

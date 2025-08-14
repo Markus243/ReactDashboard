@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 import { Footer } from './Footer';
@@ -51,14 +50,9 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         <Header />
         
         <main className="flex-1 overflow-x-hidden overflow-y-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="p-6 min-h-[calc(100vh-170px)]"
-          >
+          <div className="p-6 min-h-[calc(100vh-170px)]">
             {children}
-          </motion.div>
+          </div>
         </main>
         
         <Footer />

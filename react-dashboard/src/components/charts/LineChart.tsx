@@ -1,6 +1,6 @@
 import { Line } from 'react-chartjs-2';
 import type { ChartData as ChartJSData, ChartOptions } from 'chart.js';
-import { defaultChartOptions, chartColorPalette } from './chartConfig';
+import { defaultChartOptions, darkChartOptions, chartColorPalette } from './chartConfig';
 
 export interface LineChartData {
   labels: string[];
@@ -19,6 +19,7 @@ interface LineChartProps {
   showLegend?: boolean;
   showGrid?: boolean;
   smooth?: boolean;
+  isDark?: boolean;
   customOptions?: Partial<ChartOptions<'line'>>;
 }
 
@@ -28,6 +29,7 @@ export const LineChart = ({
   showLegend = true,
   showGrid = true,
   smooth = true,
+  isDark = false,
   customOptions = {}
 }: LineChartProps) => {
   
@@ -35,21 +37,21 @@ export const LineChart = ({
     labels: data.labels,
     datasets: data.datasets.map((dataset, index) => {
       const color = dataset.color || chartColorPalette[index % chartColorPalette.length];
-      const fillColor = dataset.gradient ? `${color}15` : 'transparent';
+      const fillColor = dataset.fill !== false ? `${color}15` : 'transparent';
       
       return {
         label: dataset.label,
         data: dataset.data,
         borderColor: color,
         backgroundColor: dataset.fill !== false ? fillColor : 'transparent',
-        borderWidth: 2.5,
+        borderWidth: 2,
         fill: dataset.fill !== false,
         tension: smooth ? 0.4 : 0,
         pointBackgroundColor: color,
         pointBorderColor: '#ffffff',
         pointBorderWidth: 2,
-        pointRadius: 4,
-        pointHoverRadius: 6,
+        pointRadius: 3,
+        pointHoverRadius: 5,
         pointHoverBackgroundColor: color,
         pointHoverBorderColor: '#ffffff',
         pointHoverBorderWidth: 2,
@@ -57,30 +59,32 @@ export const LineChart = ({
     }),
   };
 
+  const baseOptions = isDark ? darkChartOptions : defaultChartOptions;
+  
   const options: ChartOptions<'line'> = {
-    ...defaultChartOptions,
+    ...baseOptions,
     plugins: {
-      ...defaultChartOptions.plugins,
+      ...baseOptions.plugins,
       legend: {
-        ...defaultChartOptions.plugins?.legend,
+        ...baseOptions.plugins?.legend,
         display: showLegend,
       },
     },
     scales: {
-      ...defaultChartOptions.scales,
+      ...baseOptions.scales,
       x: {
-        ...defaultChartOptions.scales?.x,
+        ...baseOptions.scales?.x,
         grid: {
+          ...baseOptions.scales?.x?.grid,
           display: showGrid,
-          color: 'rgba(148, 163, 184, 0.1)',
         },
       },
       y: {
-        ...defaultChartOptions.scales?.y,
+        ...baseOptions.scales?.y,
         beginAtZero: true,
         grid: {
+          ...baseOptions.scales?.y?.grid,
           display: showGrid,
-          color: 'rgba(148, 163, 184, 0.1)',
         },
       },
     },

@@ -34,32 +34,21 @@ export const MetricCard = ({
     return val;
   };
 
-  const colorClasses = {
-    primary: 'from-primary-500 to-primary-600',
-    accent: 'from-accent-500 to-accent-600',
-    warning: 'from-yellow-500 to-yellow-600',
-    success: 'from-green-500 to-green-600',
-    danger: 'from-red-500 to-red-600',
-  };
-
-  const bgColorClasses = {
-    primary: 'from-primary-50 to-primary-100 dark:from-dark-700 dark:to-dark-700',
-    accent: 'from-accent-50 to-accent-100 dark:from-dark-700 dark:to-dark-700',
-    warning: 'from-yellow-50 to-yellow-100 dark:from-dark-700 dark:to-dark-700',
-    success: 'from-green-50 to-green-100 dark:from-dark-700 dark:to-dark-700',
-    danger: 'from-red-50 to-red-100 dark:from-dark-700 dark:to-dark-700',
+  const iconColorClasses = {
+    primary: 'bg-primary-500 text-white',
+    accent: 'bg-accent-500 text-white',
+    warning: 'bg-yellow-500 text-white',
+    success: 'bg-green-500 text-white',
+    danger: 'bg-red-500 text-white',
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -5 }}
-      transition={{ duration: 0.3 }}
-      className={clsx(
-        "relative overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-800 p-6 shadow-sm hover:shadow-lg transition-all duration-300",
-        `bg-gradient-to-br ${bgColorClasses[color]}`
-      )}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      whileHover={{ y: -2 }}
+      className="relative bg-white dark:bg-dark-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200"
     >
       {loading && (
         <div className="absolute inset-0 bg-white/50 dark:bg-gray-800/50 flex items-center justify-center">
@@ -96,16 +85,13 @@ export const MetricCard = ({
         </div>
 
         <div className={clsx(
-          "flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-r text-white shadow-lg",
-          colorClasses[color]
+          "flex h-12 w-12 items-center justify-center rounded-lg",
+          iconColorClasses[color]
         )}>
           <Icon className="h-6 w-6" />
         </div>
       </div>
 
-      {/* Subtle background pattern */}
-      <div className="absolute top-0 right-0 -mt-4 -mr-4 h-16 w-16 rounded-full bg-white/10 dark:bg-gray-700/10" />
-      <div className="absolute bottom-0 left-0 -mb-8 -ml-8 h-20 w-20 rounded-full bg-white/5 dark:bg-gray-700/5" />
     </motion.div>
   );
 };

@@ -16,7 +16,7 @@ import { BarChart } from '../../components/charts/BarChart';
 import { DoughnutChart } from '../../components/charts/DoughnutChart';
 import type { DashboardMetrics } from '../../types';
 import type { LineChartData, BarChartData, DoughnutChartData } from '../../components/charts';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { setPageTitle } from '../../store/slices/uiSlice';
 
 export const DashboardPage = () => {
@@ -26,6 +26,7 @@ export const DashboardPage = () => {
   const [distributionData, setDistributionData] = useState<DoughnutChartData | null>(null);
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
+  const { theme } = useAppSelector((state) => state.ui);
 
   useEffect(() => {
     dispatch(setPageTitle('Dashboard'));
@@ -45,7 +46,7 @@ export const DashboardPage = () => {
         const mockRevenueData: LineChartData = {
           labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
           datasets: [{
-            label: 'Revenue',
+            label: 'Monthly Revenue',
             data: [65000, 78000, 82000, 91000, 88000, 98500],
             gradient: true,
             fill: true
@@ -55,7 +56,7 @@ export const DashboardPage = () => {
         const mockUsersData: BarChartData = {
           labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
           datasets: [{
-            label: 'New Users',
+            label: 'New Registrations',
             data: [1200, 1900, 1700, 2100, 1800, 2300],
             gradient: true
           }]
@@ -83,33 +84,31 @@ export const DashboardPage = () => {
     fetchDashboardData();
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-    },
-  };
 
   return (
     <motion.div
-      variants={containerVariants}
       initial="hidden"
       animate="visible"
+      variants={{
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.2
+          }
+        }
+      }}
       className="space-y-6"
     >
       {/* Welcome Section */}
-      <motion.div variants={itemVariants} className="mb-8">
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, y: -20 },
+          visible: { opacity: 1, y: 0 }
+        }}
+        className="mb-8"
+      >
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -134,7 +133,10 @@ export const DashboardPage = () => {
 
       {/* Metrics Grid */}
       <motion.div
-        variants={itemVariants}
+        variants={{
+          hidden: { opacity: 0, y: 20 },
+          visible: { opacity: 1, y: 0 }
+        }}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
       >
         <MetricCard
@@ -176,8 +178,14 @@ export const DashboardPage = () => {
       </motion.div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        <motion.div variants={itemVariants}>
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, y: 20 },
+          visible: { opacity: 1, y: 0 }
+        }}
+        className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6"
+      >
+        <div>
           <ChartWidget
             title="Revenue Overview"
             subtitle="Monthly revenue for the past 6 months"
@@ -191,12 +199,14 @@ export const DashboardPage = () => {
               <LineChart
                 data={revenueData}
                 height={300}
+                isDark={theme === 'dark'}
+                showLegend={false}
               />
             )}
           </ChartWidget>
-        </motion.div>
+        </div>
 
-        <motion.div variants={itemVariants}>
+        <div>
           <ChartWidget
             title="User Growth"
             subtitle="New users registered per month"
@@ -210,12 +220,14 @@ export const DashboardPage = () => {
               <BarChart
                 data={usersData}
                 height={300}
+                isDark={theme === 'dark'}
+                showLegend={false}
               />
             )}
           </ChartWidget>
-        </motion.div>
+        </div>
 
-        <motion.div variants={itemVariants}>
+        <div>
           <ChartWidget
             title="Traffic Sources"
             subtitle="Breakdown by device type"
@@ -229,15 +241,22 @@ export const DashboardPage = () => {
               <DoughnutChart
                 data={distributionData}
                 height={300}
+                isDark={theme === 'dark'}
+                showLegend={true}
               />
             )}
           </ChartWidget>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
 
       {/* Recent Activity */}
-      <motion.div variants={itemVariants}>
-        <div className="bg-white dark:bg-dark-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, y: 20 },
+          visible: { opacity: 1, y: 0 }
+        }}
+      >
+        <div className="bg-white dark:bg-dark-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               Recent Activity
